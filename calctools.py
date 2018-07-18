@@ -4,9 +4,30 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
+import re as re
 import bioanaly.func as fc
 
 Kb = 1.38064852 * 0.001 # Boltzmann constant
+
+def get_secstdf(filename, Nres):
+    res_list = []
+    countrow = 0
+
+    for line in open(filename):
+        countrow += 1
+        if line[0:10] == 'set ytics(':
+            resfound_list = re.findall('\d{2,3}"', line)
+            for i in range(0, len(resfound_list)):
+                resnum = re.match('\d{2,3}', resfound_list[i])
+                resnum = int(resnum.group())
+
+        if line[0:18].strip() == '1.000    1.000':
+            row = countrow - 1
+    df_sec = pd.read_table(filename, delim_whitespace=True, skiprows=row, names=['time', 'resnum', 'secnum'])
+    df_sec = df_sec[df_sec['time'] != 'end']
+    df_sec = df_sec[df_sec['time'] != 'pause']
+    df_sec = df_sec[df_sec['resnum'] != Nres + 1].astype(float)
+    return df_sec
 
 def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
     maxv = series.max()
@@ -28,14 +49,14 @@ def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
     mpl.rcParams['axes.linewidth'] = 2.5
     filename = 'frehist.pdf'
 
-    startlabel = round(int(minv), -1) # Set the tick parameters
-    lastlabel = round(int(maxv), -1)
-    step = round(int((maxv - minv) / 5), -1)
+    startlabel = int(minv) # Set the tick parameters
+    lastlabel = int(maxv)
+    step = int((maxv - minv) / 5)
 
     ax = fig.add_subplot(1,1,1)
     ax.plot(freene, color='Red', linewidth=3)
-    ax.set_xticks(np.arange(0.5, binnum + 1, int(binnum / 5)))
-    ax.set_xticklabels(np.arange(startlabel, lastlabel, step), fontsize=15)
+    ax.set_xticks(np.arange(0, binnum + 1, int(binnum / 5)))
+    ax.set_xticklabels(np.arange(startlabel, lastlabel + 1, step), fontsize=15)
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
     plt.show()
