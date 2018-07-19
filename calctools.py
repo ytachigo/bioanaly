@@ -5,29 +5,8 @@ import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 import re as re
-import bioanaly.func as fc
 
 Kb = 1.38064852 * 0.001 # Boltzmann constant
-
-def get_secstdf(filename, Nres):
-    res_list = []
-    countrow = 0
-
-    for line in open(filename):
-        countrow += 1
-        if line[0:10] == 'set ytics(':
-            resfound_list = re.findall('\d{2,3}"', line)
-            for i in range(0, len(resfound_list)):
-                resnum = re.match('\d{2,3}', resfound_list[i])
-                resnum = int(resnum.group())
-
-        if line[0:18].strip() == '1.000    1.000':
-            row = countrow - 1
-    df_sec = pd.read_table(filename, delim_whitespace=True, skiprows=row, names=['time', 'resnum', 'secnum'])
-    df_sec = df_sec[df_sec['time'] != 'end']
-    df_sec = df_sec[df_sec['time'] != 'pause']
-    df_sec = df_sec[df_sec['resnum'] != Nres + 1].astype(float)
-    return df_sec
 
 def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
     maxv = series.max()
