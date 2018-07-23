@@ -87,9 +87,8 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
     pcbar = plt.colorbar() # Colorbar
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
-    if calcfre == True:
-        pcbar.set_label('(kJ /mol)', fontsize=16, fontweight='bold')
-    else: pcbar.set_label('Probability', fontsize=16, fontweight='bold') 
+    pcbar.set_label('(kJ /mol)', fontsize=16, fontweight='bold')
+    if calcfre == False: pcbar.set_label('Probability', fontsize=16, fontweight='bold') 
     ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
     ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
     ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1), fontsize=15)
