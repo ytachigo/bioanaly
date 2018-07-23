@@ -85,7 +85,7 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
     fremax = int(np.max([np.max(freene2d[i]) for i in range(0, binnum0)]))
 
     ax = fig.add_subplot(1,1,1)
-    pccol = plt.pcolor(freene2d, cmap='Spectral', vmin=0, vmax=fremax)
+    pccol = plt.pcolor(freene2d, cmap=cm, vmin=0, vmax=fremax)
     pcbar = plt.colorbar() # Colorbar
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
