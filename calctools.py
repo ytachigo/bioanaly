@@ -8,7 +8,7 @@ import re as re
 
 Kb = 1.38064852 * 0.001 # Boltzmann constant
 
-def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
+def frehist(series, binnum, T, calcfre=True): # Calculate a 1-dimensional free energy surface
     maxv = series.max()
     minv = series.min()
     hdelta = (maxv - minv) / binnum
@@ -18,9 +18,12 @@ def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
         hindex = int((v - minv) / hdelta)
         hist_list[hindex] += 1
 
-    logp = - Kb * T * np.log(hist_list / len(hist_list))
-    minlogp = np.min(logp)
-    freene = logp - minlogp # Fee energy values
+    if calcfre == True:
+        logp = - Kb * T * np.log(hist_list / len(hist_list))
+        minlogp = np.min(logp)
+        freene = logp - minlogp # Fee energy values
+
+    else: freene = hist_list / len(hist_list) 
 
     sns.set_style('ticks') # Plot the free energy
     fig = plt.figure(figsize=(5, 5))
@@ -41,7 +44,7 @@ def frehist(series, binnum, T): # Calculate a 1-dimensional free energy surface
     plt.show()
     return freene
 
-def frehist2d(series0, series1, binnum0, binnum1, T):
+def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
     maxv0 = series0.max()
     maxv1 = series1.max()
     minv0 = series0.min()
@@ -56,8 +59,13 @@ def frehist2d(series0, series1, binnum0, binnum1, T):
         hindex1 = int((v['series1'] - minv1) / hdelta1)
         hist2d_list[hindex0][hindex1] += 1
 
-    maxhist2d = np.max([np.max(hist2d_list[i]) for i in range(0, binnum0)])
-    freene2d = - Kb * T * np.ma.log(hist2d_list / maxhist2d) # Fee energy values
+    if calcfre == True:
+        maxhist2d = np.max([np.max(hist2d_list[i]) for i in range(0, binnum0)])
+        freene2d = - Kb * T * np.ma.log(hist2d_list / maxhist2d) # Fee energy values
+    
+    else:
+        maxhist2d = np.max([np.max(hist2d_list[i]) for i in range(0, binnum0)])
+        freene2d = hist2d_list / maxhist2d 
 
     sns.set_style('ticks') # Plot the free energy
     fig = plt.figure(figsize=(6, 5))
@@ -81,7 +89,9 @@ def frehist2d(series0, series1, binnum0, binnum1, T):
     pcbar = plt.colorbar() # Colorbar
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
-    pcbar.set_label('(kJ /mol)', fontsize=16, fontweight='bold')
+    if calcfre == True:
+        pcbar.set_label('(kJ /mol)', fontsize=16, fontweight='bold')
+    else: pcbar.set_label('Probability', fontsize=16, fontweight='bold') 
     ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
     ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
     ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1), fontsize=15)
