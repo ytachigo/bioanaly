@@ -19,5 +19,4 @@ def jackknife(series, n):
     jav = np.mean(av_list)
     delta = [(jav - av) * (jav - av) for av in av_list]
     jerr = np.sqrt(np.sum(delta) / (Nsp - 1)) / np.sqrt(Nsp)
-    bias = (Nsp - 1) * (jav - series.mean())
-    return jav, jerr, bias
+    return jav, jerr
