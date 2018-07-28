@@ -14,7 +14,7 @@ def get_secdf(filename, Nres): # Get a dataframe of DSSP results
     for line in open(filename):
         countrow += 1
         if line[0:10] == 'set ytics(':
-            resfound_list = re.findall('\d{2,3}', line)
+            resfound_list = re.findall('\d{2,3}"', line)
             for i in range(0, len(resfound_list)):
                 resnum = re.match('\d{2,3}', resfound_list[i])
                 resnum = int(resnum.group())
