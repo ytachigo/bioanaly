@@ -35,11 +35,11 @@ def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a proba
     sec_list = np.array([0 for i in range(0, Nres)])
     sectime_list = [[] for i in range(0, Nres)]
 
-    for i, v in df.iterrows():
-        if v['secnum'] == secnum and lastframe >= v['time'] >= startframe:
+    for i, v in df[df['time' >= startframe]].iterrows():
+        if v['secnum'] == secnum and lastframe >= v['time']:
             sec_list[int(v['resnum']) - 1] += 1
             sectime_list[int(v['resnum']) - 1].append(1)
-        if v['secnum'] != secnum and lastframe >= v['time'] >= startframe:
+        if v['secnum'] != secnum and lastframe >= v['time']:
             sectime_list[int(v['resnum']) - 1].append(0)
     return sec_list / ((lastframe - startframe) * mdnum), sectime_list
 
