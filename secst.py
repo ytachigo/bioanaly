@@ -34,13 +34,15 @@ def get_secdf(filename, Nres): # Get a dataframe of DSSP results
 def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a probability distributions of secondary structure
     sec_list = np.array([0 for i in range(0, Nres)])
     sectime_list = [[] for i in range(0, Nres)]
+    df = df[df['time'] >= startframe]
+    df = df[df['time'] <= lastframe]
 
-    for i, v in df[df['time' >= startframe]].iterrows():
-        if v['secnum'] == secnum and lastframe >= v['time']:
-            sec_list[int(v['resnum']) - 1] += 1
-            sectime_list[int(v['resnum']) - 1].append(1)
-        if v['secnum'] != secnum and lastframe >= v['time']:
-            sectime_list[int(v['resnum']) - 1].append(0)
+    for rn, sn in zip(df['resnum'], df['secnum']):
+        if sn == secnum:
+            sec_list[int(rn) - 1] += 1
+            sectime_list[int(rn) - 1].append(1)
+        if sn != secnum:
+            sectime_list[int(rn) - 1].append(0)
     return sec_list / ((lastframe - startframe) * mdnum), sectime_list
 
 def  get_cddf(df, Nres, Ncd, lastframe): # Calculate a secondary structure content
