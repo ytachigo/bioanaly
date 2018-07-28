@@ -31,5 +31,5 @@ def get_hbdf(filename): # Get a dataframe of hydrogen bond analysis
                            names=['time', 'respair', 'hbond'])
     df_hb = df_hb[df_hb['time'] != 'end']
     df_hb = df_hb[df_hb['time'] != 'pause']
-    df_hb = df_hb[df_hb['respair'] != len(respair_list) + 1].astype(float)
+    df_hb = df_hb[df_hb['respair'] != len(respair_list)].astype(float)
     return df_hb, respair_list
