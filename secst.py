@@ -18,6 +18,7 @@ def get_secdf(filename, Nres): # Get a dataframe of DSSP results
             for i in range(0, len(resfound_list)):
                 resnum = re.match('\d{2,3}', resfound_list[i])
                 resnum = int(resnum.group())
+                res_list.append(resnum)
 
         if line[0:18].strip() == '1.000    1.000':
             row = countrow - 1
