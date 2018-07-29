@@ -23,7 +23,7 @@ def get_hbdf(filename): # Get a dataframe of hydrogen bond analysis
                 respair = [pair0, pair1]
                 respair_list.append(respair)
 
-        if line[0:18].strip() == '1.000    1.000':
+        if line[0:20].strip() == '1.000    1.000' or line[0:20].strip() == '1.000     1.000':
             row = countrow - 1
     df_hb = pd.read_table(filename, 
                            delim_whitespace=True, 

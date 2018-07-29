@@ -15,3 +15,10 @@ def ceil(value, dignum):
 def crosscorr(vec0, vec1):
     value = np.dot(vec0, vec1) / (np.linalg.norm(vec0) * np.linalg.norm(vec1))
     return value
+
+def concat_ordered(df):
+    ord_col = []
+    for frame in frames:
+        ord_col.extend(i for i in df.columns if i not in ord_col)
+    df_ord= pd.concat(frames)    
+    return df_ord[ord_col]
