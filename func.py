@@ -12,9 +12,9 @@ def floor(value, dignum):
 def ceil(value, dignum):
     return (int(value / dignum) + 1 ) * dignum
 
-def crosscorr(vec0, vec1):
-    value = np.dot(vec0, vec1) / (np.linalg.norm(vec0) * np.linalg.norm(vec1))
-    return value
+def reload(module):
+    import importlib
+    importlib.reload(module)
 
 def concat_ordered(frames):
     ord_col = []
@@ -23,6 +23,6 @@ def concat_ordered(frames):
     df_ord= pd.concat(frames)    
     return df_ord[ord_col]
 
-def reload(module):
-    import importlib
-    importlib.reload(module)
+def crosscorr(vec0, vec1):
+    value = np.dot(vec0, vec1) / (np.linalg.norm(vec0) * np.linalg.norm(vec1))
+    return value
