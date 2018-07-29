@@ -39,14 +39,16 @@ def hbnum(df, respr_list, Nmax, mdnum, startframe, lastframe, group0=[], group1=
     hbnum_list = np.array([0 for i in range(0, Nmax)])
     df = df[df['time'] >= startframe]
     df = df[df['time'] <= lastframe]
+    calc_list = []
 
     if len(group0) > 0 and len(group1) > 0:
         for i, pr in enumerate(respr_list):
             intersec0 = set(pr) & set(group0)
             intersec1 = set(pr) & set(group1)
 
-            if len(intersec0) == len(intersec1) == 1: continue
-            else: df = df[df['respair'] != i + 1]
+            if len(intersec0) == len(intersec1) == 1:
+                calc_list.append(i + 1)
+    df = df[df['respair'].isin(calc_list)]
 
     for pr, hb in zip(df['respair'], df['hbond']):
         hbnum_list[respr_list[int(pr) - 1][0] - 1] += hb
