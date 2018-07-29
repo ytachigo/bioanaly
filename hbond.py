@@ -49,7 +49,7 @@ def hbnum(df, respr_list, Nmax, mdnum, startframe, lastframe, group0=[], group1=
             else: df = df[df['respair'] != i + 1]
 
     for pr, hb in zip(df['respair'], df['hbond']):
-        hbnum_list[respair_list[int(pr) - 1][0] - 1] += hb
-        hbnum_list[respair_list[int(pr) - 1][1] - 1] += hb
+        hbnum_list[respr_list[int(pr) - 1][0] - 1] += hb
+        hbnum_list[respr_list[int(pr) - 1][1] - 1] += hb
 
     return hbnum_list / ((lastframe - startframe) * mdnum)
