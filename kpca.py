@@ -7,7 +7,7 @@ import seaborn as sns
 
 def get_kernel(sigma=100):
     def kernel(x0, x1):
-        return np.exp(- sigma * (np.linalg.norm(x0 - x1) ** 2)) # Gaussian kernel
+        return np.exp(- sigma * ((x0 - x1) ** 2)) # Gaussian kernel
         #return (np.dot(x0,x1) + 1) ** sigma # Polynomial kernel
         #return np.dot(x0,x1) # Linear kernel
     return kernel
