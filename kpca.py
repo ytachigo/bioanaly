@@ -7,7 +7,7 @@ import seaborn as sns
 
 def get_kernel(sigma=100):
     def kernel(x0, x1):
-        return np.exp(- sigma * ((x0 - x1) ** 2)) # Gaussian kernel
+        return np.exp(- sigma * (np.linalg.norm(x0 - x1) ** 2)) # Gaussian kernel
         #return (np.dot(x0,x1) + 1) ** sigma # Polynomial kernel
         #return np.dot(x0,x1) # Linear kernel
     return kernel
@@ -27,6 +27,6 @@ def kpca(df, kernel): # Karnel PCA
     def projection(x, i):
         pc = 0
         for n in range(N):
-            pc += eigvecs[n,-i] * kernel(x, train_data.iloc[n])
+            pc += eigvecs[n,-i] * kernel(x, df.iloc[n])
         return pc / np.sqrt(eigvals[-i] * N)
     return projection
