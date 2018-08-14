@@ -23,10 +23,14 @@ def kpca(df, kernel): # Karnel PCA
     one_n = np.ones(shape=(N,N)) / N
     gram = k0 - one_n.dot(k0) - k0.dot(one_n) + one_n.dot(k0).dot(one_n)
     eigvals, eigvecs = eigh(gram)
-    
+
     def projection(x, i):
         pc = 0
         for n in range(N):
             pc += eigvecs[n,-i] * kernel(x, df.iloc[n])
         return pc / np.sqrt(eigvals[-i] * N)
+
+    def get_cumlist():
+        cum_list = eigvals / np.sum(eigvals)
+        return cum_list
     return projection
