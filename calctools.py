@@ -23,11 +23,12 @@ def frehist(series, binnum, T, calcfre=True): # Calculate a 1-dimensional free e
         hindex = int((v - minv) / hdelta)
         hist_list[hindex] += 1
 
-    logp = - Kb * T * np.log(hist_list / len(series))
-    minlogp = np.min(logp)
-    freene = logp - minlogp # Fee energy values
-
-    if calcfre == False: freene = hist_list / binnum 
+    prob = hist_list / len(series) 
+    if calcfre == True:
+        logp = - Kb * T * np.log(prob)
+        minlogp = np.min(logp)
+        freene = logp - minlogp # Fee energy values
+    else: freene = prob
 
     sns.set_style('ticks') # Plot the free energy
     fig = plt.figure(figsize=(5, 5))
@@ -63,12 +64,12 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
         hindex1 = int((v['series1'] - minv1) / hdelta1)
         hist2d_list[hindex0][hindex1] += 1
 
-    maxhist2d = np.max([np.max(hist2d_list[i]) for i in range(0, binnum0)])
-    freene2d = - Kb * T * np.ma.log(hist2d_list / maxhist2d) # Fee energy values
-    
-    if calcfre == False:
-        maxhist2d = np.max([np.max(hist2d_list[i]) for i in range(0, binnum0)])
-        freene2d = hist2d_list / len(series0)
+    prob = hist2d_list / len(series0)
+    if calcfre == True:
+        logp = - Kb * T * np.ma.log(hist2d_list)
+        minlogp = np.max([np.max(logp[i]) for i in range(0, binnum0)])
+        freene2d = logp - minlogp # Fee energy values
+    else: freene2d = prob
 
     sns.set_style('ticks') # Plot the free energy
     fig = plt.figure(figsize=(6, 5))
