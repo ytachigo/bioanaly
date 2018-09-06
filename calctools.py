@@ -13,7 +13,7 @@ def convergence(series, n):
     conv_list = [np.mean(sample) for sample in cutsamples]
     return conv_list
 
-def frehist(series, binnum, T, calcfre=True): # Calculate a 1-dimensional free energy surface
+def frehist(series, binnum, T, calcfre=True, rdf=False): # Calculate a 1-dimensional free energy surface
     maxv = series.max()
     minv = series.min()
     hdelta = (maxv - minv) / binnum
@@ -23,7 +23,14 @@ def frehist(series, binnum, T, calcfre=True): # Calculate a 1-dimensional free e
         hindex = int((v - minv) / hdelta)
         hist_list[hindex] += 1
 
-    prob = hist_list / len(series) 
+    prob = hist_list / len(series)
+
+    if rdf == True:
+        for i in range(0, len(prob)):
+            radius = (minv + (i * hdelta))
+            surfarea = 4 * np.pi * radius * radius
+            prob[i] = prob[i] / surfarea
+
     if calcfre == True:
         logp = - Kb * T * np.log(prob)
         minlogp = np.min(logp)
@@ -49,7 +56,7 @@ def frehist(series, binnum, T, calcfre=True): # Calculate a 1-dimensional free e
     plt.show()
     return freene
 
-def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
+def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
     maxv0 = series0.max()
     maxv1 = series1.max()
     minv0 = series0.min()
@@ -65,9 +72,16 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
         hist2d_list[hindex0][hindex1] += 1
 
     prob = hist2d_list / len(series0)
+
+    if rdf == True:
+        for i in range(0, len(prob)):
+            radius = (minv0 + (i * hdelta0))
+            surfarea = 4 * np.pi * radius * radius
+            prob[i] = prob[i] / surfarea
+
     if calcfre == True:
-        logp = - Kb * T * np.ma.log(hist2d_list)
-        minlogp = np.max([np.max(logp[i]) for i in range(0, binnum0)])
+        logp = - Kb * T * np.ma.log(prob)
+        minlogp = np.min([np.min(logp[i]) for i in range(0, binnum0)])
         freene2d = logp - minlogp # Fee energy values
     else: freene2d = prob
 
@@ -93,7 +107,7 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True):
     pcbar = plt.colorbar() # Colorbar
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
-    pcbar.set_label('(kJ /mol)', fontsize=16, fontweight='bold')
+    pcbar.set_label('(kJ/mol)', fontsize=16, fontweight='bold')
     if calcfre == False: pcbar.set_label('Probability', fontsize=16, fontweight='bold') 
     ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
     ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
