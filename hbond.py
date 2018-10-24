@@ -36,7 +36,7 @@ def get_hbdf(filename): # Get a dataframe of hydrogen bond analysis
 
 def hbnum(df, respr_list, Nmax, mdnum, startframe, lastframe, group0=[], group1=[]):
     # Calculate the number of hydrogen bonds per one frame
-    hbnum_list = np.array([0 for i in range(0, Nmax)])
+    hbnum_list = np.array([0 for i in range(0, Nmax + 1)])
     df = df[df['time'] >= startframe]
     df = df[df['time'] <= lastframe]
     calc_list = []
@@ -51,7 +51,7 @@ def hbnum(df, respr_list, Nmax, mdnum, startframe, lastframe, group0=[], group1=
     df = df[df['respair'].isin(calc_list)]
 
     for pr, hb in zip(df['respair'], df['hbond']):
-        hbnum_list[respr_list[int(pr) - 1][0] - 1] += hb
-        hbnum_list[respr_list[int(pr) - 1][1] - 1] += hb
+        hbnum_list[respr_list[int(pr) - 1][0]] += hb
+        hbnum_list[respr_list[int(pr) - 1][1]] += hb
 
     return hbnum_list / ((lastframe - startframe) * mdnum)
