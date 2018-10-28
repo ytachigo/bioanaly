@@ -24,5 +24,6 @@ def concat_ordered(frames):
     return df_ord[ord_col]
 
 def crosscorr(vec0, vec1):
-    value = np.dot(vec0, vec1) / (np.linalg.norm(vec0) * np.linalg.norm(vec1))
+    value = np.dot(vec0, vec1) / \
+            (np.linalg.norm(vec0) * np.linalg.norm(vec1))
     return value

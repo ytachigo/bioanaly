@@ -14,29 +14,31 @@ def get_hbdf(filename): # Get a dataframe of hydrogen bond analysis
     for line in open(filename):
         countrow += 1
         if line[0:10] == 'set ytics(':
-            resfound_list = re.findall('\d{2,3}@', line)
+            resfound_list = re.findall('\d{1,3}@', line)
             for i in range(0, len(resfound_list), 2):
-                pair0 = re.match('\d{2,3}', resfound_list[i])
+                pair0 = re.match('\d{1,3}', resfound_list[i])
                 pair0 = int(pair0.group())
-                pair1 = re.match('\d{2,3}', resfound_list[i + 1])
+                pair1 = re.match('\d{1,3}', resfound_list[i + 1])
                 pair1 = int(pair1.group())
                 respair = [pair0, pair1]
                 respair_list.append(respair)
 
-        if line[0:20].strip() == '1.000    1.000' or line[0:20].strip() == '1.000     1.000':
+        if line[0:20].strip() == '1.000    1.000' or \
+           line[0:20].strip() == '1.000     1.000':
             row = countrow - 1
     df_hb = pd.read_table(filename, 
-                           delim_whitespace=True, 
-                           skiprows=row, 
-                           names=['time', 'respair', 'hbond'])
+                          delim_whitespace=True, 
+                          skiprows=row, 
+                          names=['time', 'respair', 'hbond'])
     df_hb = df_hb[df_hb['time'] != 'end']
     df_hb = df_hb[df_hb['time'] != 'pause']
-    df_hb = df_hb[df_hb['respair'] != len(respair_list)].astype(float)
+    df_hb = df_hb[df_hb['respair'] != len(respair_list) + 1].astype(float)
     return df_hb, respair_list
 
-def hbnum(df, respr_list, Nmax, mdnum, startframe, lastframe, group0=[], group1=[]):
+def hbnum(df, respr_list, nmax, mdnum, 
+          startframe, lastframe, group0=[], group1=[]):
     # Calculate the number of hydrogen bonds per one frame
-    hbnum_list = np.array([0 for i in range(0, Nmax + 1)])
+    hbnum_list = np.array([0 for i in range(0, nmax + 1)])
     df = df[df['time'] >= startframe]
     df = df[df['time'] <= lastframe]
     calc_list = []
