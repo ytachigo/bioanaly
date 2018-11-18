@@ -49,11 +49,11 @@ def get_inpcrd():
     filename = input('Filename: ')
     f = open(filename, 'r')
 
-    for kline in f.readlines()[1:]:
-        xcoord_list.append(float(kline[0:12].strip()))
-        ycoord_list.append(float(kline[12:24].strip()))
-        zcoord_list.append(float(kline[24:36].strip()))
-        xcoord_list.append(float(kline[36:48].strip()))
-        ycoord_list.append(float(kline[48:60].strip()))
-        zcoord_list.append(float(kline[60:72].strip()))
+    for kline in f.readlines()[2:]:
+        xcoord_list.append(str(kline[0:12].strip()))
+        ycoord_list.append(str(kline[12:24].strip()))
+        zcoord_list.append(str(kline[24:36].strip()))
+        xcoord_list.append(str(kline[36:48].strip()))
+        ycoord_list.append(str(kline[48:60].strip()))
+        zcoord_list.append(str(kline[60:72].strip()))
     return xcoord_list, ycoord_list, zcoord_list
