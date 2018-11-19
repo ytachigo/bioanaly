@@ -12,7 +12,7 @@ def get_pdbtraj():
     ycoord = []
     zcoord = []
 
-    filename = input('Filename: ')
+    filename = input('Filename(pdb): ')
     f = open(filename, 'r')
 
     for kline in f.readlines():
@@ -46,7 +46,7 @@ def get_inpcrd():
     ycoord_list = []
     zcoord_list = []
 
-    filename = input('Filename: ')
+    filename = input('Filename(inpcrd): ')
     f = open(filename, 'r')
 
     for kline in f.readlines()[2:]:
