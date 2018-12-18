@@ -13,22 +13,22 @@ def get_kernel(sigma=100):
     return kernel
 
 def kpca(df, kernel): # Karnel PCA
-    N = len(df)
-    k0 = np.zeros(shape=(N,N))
+    nfr = len(df)
+    k0 = np.zeros(shape=(nfr,nfr))
 
     for n0, x0 in df.iterrows():
         for n1, x1 in df.iterrows():
             k0[n0,n1] = kernel(x0, x1)
 
-    one_n = np.ones(shape=(N,N)) / N
+    one_n = np.ones(shape=(nfr,nfr)) / nfr
     gram = k0 - one_n.dot(k0) - k0.dot(one_n) + one_n.dot(k0).dot(one_n)
     eigvals, eigvecs = eigh(gram)
 
     def projection(x, i):
         pc = 0
-        for n in range(N):
+        for n in range(nfr):
             pc += eigvecs[n,-i] * kernel(x, df.iloc[n])
-        return pc / np.sqrt(eigvals[-i] * N)
+        return pc / np.sqrt(eigvals[-i] * nfr)
 
     def get_cumlist():
         cum_list = eigvals / np.sum(eigvals)
