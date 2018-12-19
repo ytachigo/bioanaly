@@ -28,6 +28,6 @@ def crosscorr(vec0, vec1, tau):
         value = np.dot(vec0, vec1) / \
                 (np.linalg.norm(vec0) * np.linalg.norm(vec1))
     if tau > 0:
-        value = np.dot(vec0[:tau], vec1[:-tau]) / \
-            (np.linalg.norm(vec0[:tau]) * np.linalg.norm(vec1[:-tau]))
+        value = np.dot(vec0[tau:], vec1[:-tau]) / \
+            (np.linalg.norm(vec0[tau:]) * np.linalg.norm(vec1[:-tau]))
     return value
