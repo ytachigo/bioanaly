@@ -45,7 +45,7 @@ def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a proba
             sectime_list[int(rn) - 1].append(0)
     return sec_list / ((lastframe - startframe) * mdnum), sectime_list
 
-def  get_cddf(df, Nres, Ncd, lastframe): # Calculate a secondary structure content
+def  get_cddf(df, Nres, ncd, lastframe): # Calculate a secondary structure content
     elcomph = 42500 * (1 - (3 / Nres))
     elcoil = 640
     totfg_list = [[0 for i in range(0, Nres)] for i in range(0, lastframe)]
@@ -61,7 +61,7 @@ def  get_cddf(df, Nres, Ncd, lastframe): # Calculate a secondary structure conte
         for j, fg in groupby(totfg):
             if j == 1:
                 Nh = sum(1 for f in fg)
-                elcalc += (Nh - Ncd) * (elcomph / Nres)
+                elcalc += (Nh - ncd) * (elcomph / Nres)
 
         if elcalc > 0:
             helixc = (elcalc - elcoil) / (elcomph - elcoil)
