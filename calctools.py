@@ -65,8 +65,8 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
     hdelta1 = (maxv1 - minv1) / binnum1
     df = pd.DataFrame({'series0': series0.values.tolist(), 
                        'series1': series1.values.tolist()})
-    hist2d_list = np.array([[0 for col in range(0, binnum1 + 1)] 
-    　　　　　　　　　　　　　　for row in range(0, binnum0 + 1)])
+    hist2d_list = np.array([[0 for col in range(0, binnum1 + 1)] \
+                           for row in range(0, binnum0 + 1)])
 
     for i, v in df.iterrows():
         hindex0 = int((v['series0'] - minv0) / hdelta0)
@@ -92,8 +92,8 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
     mpl.rc('font', weight='bold')
     mpl.rcParams['axes.linewidth'] = 2.5
     filename = 'fre2dhist.pdf'
-    cm = make_cmap(['maroon', 'red', 'yellow', 'greenyellow', 
-    　　　　　　　　　'cyan', 'blue', 'navy'])
+    cm = make_cmap(['maroon', 'red', 'yellow', 'greenyellow', \
+                    'cyan', 'blue', 'navy'])
 
     startlabel0 = int(minv0) # Set the tick parameters
     startlabel1 = int(minv1)
@@ -111,13 +111,12 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
     pcbar.set_label('(kJ/mol)', fontsize=16, fontweight='bold')
-    if calcfre == False: pcbar.set_label('Probability', 
-        　　　　　　　　　　　　　　　　　　　　fontsize=16, 
-        　　　　　　　　　　　　　　　　　　　　fontweight='bold') 
+    if calcfre == False: pcbar.set_label('Probability', fontsize=16, 
+                                         fontweight='bold') 
     ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
     ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
     ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1), 
-    　　　　　　　　　　　 fontsize=15)
+                       fontsize=15)
     ax.set_yticklabels(np.arange(startlabel0, lastlabel0 + 1, step0), 
                        fontsize=15)
     ax.tick_params(labelsize=15)
