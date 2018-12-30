@@ -45,12 +45,21 @@ def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a proba
             sectime_list[int(rn) - 1].append(0)
     return sec_list / ((lastframe - startframe) * mdnum), sectime_list
 
-def  get_cddf(df, Nres, ncd, lastframe): # Calculate a secondary structure content
+def secprob_time(sectime_list, binnum):
+    cutsample = [samples for samples in zip(*[iter(np.array(sectime_list).T)]*binnum)]
+    nsp = len(cutsample)
+    secprt_list = []
+
+    for i in range(0,nsp):
+        secprt_list.append(np.mean(cutsample[i]) / len(cutsample[i]))
+    return secprt_list
+
+def  get_cddf(df, Nres, ncd, lastframe): # Calculate a helix content
     elcomph = 42500 * (1 - (3 / Nres))
     elcoil = 640
     totfg_list = [[0 for i in range(0, Nres)] for i in range(0, lastframe)]
     helixc_list = []
-
+    
     for i, v in df.iterrows():
         if v['time'] <= lastframe - 1:
             if v['secnum'] == 4:
