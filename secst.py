@@ -51,7 +51,7 @@ def secprob_time(sectime_list, binnum):
     secprt_list = []
 
     for i in range(0,nsp):
-        secprt_list.append(np.mean(cutsample[i]) / len(cutsample[i]))
+        secprt_list.append(np.mean(cutsample[i]))
     return secprt_list
 
 def  get_cddf(df, Nres, ncd, lastframe): # Calculate a helix content
