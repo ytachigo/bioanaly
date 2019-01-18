@@ -20,7 +20,7 @@ def get_secdf(filename, Nres): # Get a dataframe of DSSP results
                 resnum = int(resnum.group())
                 res_list.append(resnum)
 
-        if line[0:18].strip() == '1.000    1.000':
+        if line[0:19].strip() == '1.000    1.000':
             row = countrow - 1
     df_sec = pd.read_table(filename, 
                            delim_whitespace=True, 
