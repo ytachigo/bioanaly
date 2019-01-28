@@ -6,7 +6,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 
 def jackknife(series, n):
-    cutsample = [samples for samples in zip(*[iter(series.tolist())]*n)]
+    cutsample = [samples for samples in zip(*[iter(series.tolist())] * n)]
     nsp = len(cutsample)
     av_list = []
 

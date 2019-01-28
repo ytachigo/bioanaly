@@ -46,7 +46,7 @@ def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a proba
     return sec_list / ((lastframe - startframe) * mdnum), sectime_list
 
 def secprob_time(sectime_list, binnum):
-    cutsample = [samples for samples in zip(*[iter(np.array(sectime_list).T)]*binnum)]
+    cutsample = [samples for samples in zip(*[iter(np.array(sectime_list).T)] * binnum)]
     nsp = len(cutsample)
     secprt_list = []
 

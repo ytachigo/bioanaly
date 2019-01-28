@@ -9,7 +9,7 @@ import re as re
 Kb = 1.38064852 * 0.001 # Boltzmann constant
 
 def convergence(series, n):
-    cutsamples = [samples for samples in zip(*[iter(series.tolist())]*n)]
+    cutsamples = [samples for samples in zip(*[iter(series.tolist())] * n)]
     conv_list = [np.mean(sample) for sample in cutsamples]
     return conv_list
 
