@@ -7,7 +7,7 @@ import seaborn as sns
 import re as re
 from itertools import groupby
 
-def get_secdf(filename, Nres): # Get a dataframe of DSSP results
+def get_secdf(filename, nres): # Get a dataframe of DSSP results
     res_list = []
     countrow = 0
 
@@ -22,18 +22,18 @@ def get_secdf(filename, Nres): # Get a dataframe of DSSP results
 
         if line[0:19].strip() == '1.000    1.000':
             row = countrow - 1
-    df_sec = pd.read_table(filename, 
-                           delim_whitespace=True, 
-                           skiprows=row, 
+    df_sec = pd.read_table(filename,
+                           delim_whitespace=True,
+                           skiprows=row,
                            names=['time', 'resnum', 'secnum'])
     df_sec = df_sec[df_sec['time'] != 'end']
     df_sec = df_sec[df_sec['time'] != 'pause']
-    df_sec = df_sec[df_sec['resnum'] != Nres + 1].astype(float)
+    df_sec = df_sec[df_sec['resnum'] != nres + 1].astype(float)
     return df_sec
 
-def secprob(df, secnum, Nres, mdnum, startframe, lastframe): # Calculate a probability distributions of secondary structure
-    sec_list = np.array([0 for i in range(0, Nres)])
-    sectime_list = [[] for i in range(0, Nres)]
+def secprob(df, secnum, nres, mdnum, startframe, lastframe): # Calculate a probability distributions of secondary structure
+    sec_list = np.array([0 for i in range(0, nres)])
+    sectime_list = [[] for i in range(0, nres)]
     df = df[df['time'] >= startframe]
     df = df[df['time'] <= lastframe]
 
@@ -54,12 +54,12 @@ def secprob_time(sectime_list, binnum):
         secprt_list.append(np.mean(cutsample[i]))
     return secprt_list
 
-def  get_cddf(df, Nres, ncd, lastframe): # Calculate a helix content
-    elcomph = 42500 * (1 - (3 / Nres))
+def  get_cddf(df, nres, ncd, lastframe): # Calculate a helix content
+    elcomph = 42500 * (1 - (3 / nres))
     elcoil = 640
-    totfg_list = [[0 for i in range(0, Nres)] for i in range(0, lastframe)]
+    totfg_list = [[0 for i in range(0, nres)] for i in range(0, lastframe)]
     helixc_list = []
-    
+
     for i, v in df.iterrows():
         if v['time'] <= lastframe - 1:
             if v['secnum'] == 4:
@@ -69,8 +69,8 @@ def  get_cddf(df, Nres, ncd, lastframe): # Calculate a helix content
         elcalc = 0
         for j, fg in groupby(totfg):
             if j == 1:
-                Nh = sum(1 for f in fg)
-                elcalc += (Nh - ncd) * (elcomph / Nres)
+                nh = sum(1 for f in fg)
+                elcalc += (nh - ncd) * (elcomph / nres)
 
         if elcalc > 0:
             helixc = (elcalc - elcoil) / (elcomph - elcoil)

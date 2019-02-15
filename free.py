@@ -13,7 +13,7 @@ def convergence(series, n):
     conv_list = [np.mean(sample) for sample in cutsamples]
     return conv_list
 
-def frehist(series, binnum, T, calcfre=True, rdf=False): # Calculate a 1-dimensional free energy surface
+def frehist(series, binnum, temp, calcfre=True, rdf=False): # Calculate a 1-dimensional free energy surface
     maxv = series.max()
     minv = series.min()
     hdelta = (maxv - minv) / binnum
@@ -32,7 +32,7 @@ def frehist(series, binnum, T, calcfre=True, rdf=False): # Calculate a 1-dimensi
             prob[i] = prob[i] / surfarea
 
     if calcfre == True:
-        logp = - Kb * T * np.log(prob)
+        logp = - Kb * temp * np.log(prob)
         minlogp = np.min(logp)
         freene = logp - minlogp # Fee energy values
     else: freene = prob
@@ -56,14 +56,15 @@ def frehist(series, binnum, T, calcfre=True, rdf=False): # Calculate a 1-dimensi
     plt.show()
     return freene
 
-def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
+def frehist2d(series0, series1, binnum0, binnum1, temp,
+              calcfre=True, rdf=False):
     maxv0 = series0.max()
     maxv1 = series1.max()
     minv0 = series0.min()
     minv1 = series1.min()
     hdelta0 = (maxv0 - minv0) / binnum0
     hdelta1 = (maxv1 - minv1) / binnum1
-    df = pd.DataFrame({'series0': series0.values.tolist(), 
+    df = pd.DataFrame({'series0': series0.values.tolist(),
                        'series1': series1.values.tolist()})
     hist2d_list = np.array([[0 for col in range(0, binnum1 + 1)] \
                            for row in range(0, binnum0 + 1)])
@@ -82,7 +83,7 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
             prob[i] = prob[i] / surfarea
 
     if calcfre == True:
-        logp = - Kb * T * np.ma.log(prob)
+        logp = - Kb * temp * np.ma.log(prob)
         minlogp = np.min([np.min(logp[i]) for i in range(0, binnum0)])
         freene2d = logp - minlogp # Fee energy values
     else: freene2d = prob
@@ -111,13 +112,13 @@ def frehist2d(series0, series1, binnum0, binnum1, T, calcfre=True, rdf=False):
     pcbar.set_ticks(range(0, fremax))
     pcbar.ax.tick_params(labelsize=17, width=4)
     pcbar.set_label('(kJ/mol)', fontsize=16, fontweight='bold')
-    if calcfre == False: pcbar.set_label('Probability', fontsize=16, 
-                                         fontweight='bold') 
+    if calcfre == False: pcbar.set_label('Probability', fontsize=16,
+                                         fontweight='bold')
     ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
     ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
-    ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1), 
+    ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1),
                        fontsize=15)
-    ax.set_yticklabels(np.arange(startlabel0, lastlabel0 + 1, step0), 
+    ax.set_yticklabels(np.arange(startlabel0, lastlabel0 + 1, step0),
                        fontsize=15)
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
