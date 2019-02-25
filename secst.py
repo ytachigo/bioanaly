@@ -35,7 +35,7 @@ def secprob(df, secnum, nres, mdnum, startframe, lastframe): # Calculate a proba
     sec_list = np.array([0 for i in range(0, nres)])
     sectime_list = [[] for i in range(0, nres)]
     df = df[df['time'] >= startframe]
-    df = df[df['time'] <= lastframe]
+    df = df[df['time'] < lastframe]
 
     for rn, sn in zip(df['resnum'], df['secnum']):
         if sn == secnum:
@@ -61,7 +61,7 @@ def  get_cddf(df, nres, ncd, lastframe): # Calculate a helix content
     helixc_list = []
 
     for i, v in df.iterrows():
-        if v['time'] <= lastframe - 1:
+        if v['time'] < lastframe:
             if v['secnum'] == 4:
                 totfg_list[int(v['time'])][int(v['resnum'] - 1)] += 1
 

@@ -26,21 +26,21 @@ def get_hbdf(filename): # Get a dataframe of hydrogen bond analysis
         if line[0:20].strip() == '1.000    1.000' or \
            line[0:20].strip() == '1.000     1.000':
             row = countrow - 1
-    df_hb = pd.read_table(filename, 
-                          delim_whitespace=True, 
-                          skiprows=row, 
+    df_hb = pd.read_table(filename,
+                          delim_whitespace=True,
+                          skiprows=row,
                           names=['time', 'respair', 'hbond'])
     df_hb = df_hb[df_hb['time'] != 'end']
     df_hb = df_hb[df_hb['time'] != 'pause']
     df_hb = df_hb[df_hb['respair'] != len(respair_list) + 1].astype(float)
     return df_hb, respair_list
 
-def hbnum(df, respr_list, resmax, mdnum, 
+def hbnum(df, respr_list, resmax, mdnum,
           startframe, lastframe, group0=[], group1=[]):
     # Calculate the number of hydrogen bonds per one frame
     hbnum_list = np.array([0 for i in range(0, resmax + 1)])
     df = df[df['time'] >= startframe]
-    df = df[df['time'] <= lastframe]
+    df = df[df['time'] < lastframe]
     calc_list = []
 
     if len(group0) > 0 and len(group1) > 0:
