@@ -13,7 +13,9 @@ def convergence(series, n):
     conv_list = [np.mean(sample) for sample in cutsamples]
     return conv_list
 
-def frehist(series, binnum, temp, calcfre=True, rdf=False): # Calculate a 1-dimensional free energy surface
+def frehist(series, binnum, temp, calcfre=True, rdf=False):
+# Calculate a 1-dimensional free energy surface
+
     maxv = series.max()
     minv = series.min()
     hdelta = (maxv - minv) / binnum

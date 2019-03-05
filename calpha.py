@@ -6,7 +6,9 @@ from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 import re as re
 
-def get_calpha(nres, startframe, lastframe, cutoff=8, distance=False): # Get alpha carbon distance
+def get_calpha(nres, startframe, lastframe, cutoff=8, distance=False):
+# Get alpha carbon distance
+
     df_list = []
     for i in range(1, nres + 1):
         filename = 'calpha%d.dat' % i
@@ -17,7 +19,8 @@ def get_calpha(nres, startframe, lastframe, cutoff=8, distance=False): # Get alp
                 dist = 'dist_%d' % j
                 name_list.append(dist)
     
-        df_dist = pd.read_table(filename, delim_whitespace=True,  skiprows=1, names=name_list)
+        df_dist = pd.read_table(filename, delim_whitespace=True, 
+                                skiprows=1, names=name_list)
         df_dist = df_dist.drop('frame', axis=1).astype(float)
         df_dist = df_dist[startframe:lastframe]
 

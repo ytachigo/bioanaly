@@ -39,7 +39,8 @@ def get_pdbtraj(): # Get a PDB trajectory data set
             ycoord = []
             zcoord = []
     f.close()
-    return atomnum_list, atomname_list, molnum_list, xcoord_list, ycoord_list, zcoord_list
+    return atomnum_list, atomname_list, molnum_list, 
+           xcoord_list, ycoord_list, zcoord_list
 
 def get_inpcrd(): # Get coordinates from a AMBER input file.
     xcoord_list = []
