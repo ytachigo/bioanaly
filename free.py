@@ -6,7 +6,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 import re as re
 
-Kb = 1.38064852 * 0.001 # Boltzmann constant
+Kb = 1.38064852 * 6.022140857 * 0.001 # Boltzmann constant
 
 def convergence(series, n):
     cutsamples = [samples for samples in zip(*[iter(series.tolist())] * n)]
@@ -103,14 +103,8 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
     cm = make_cmap(['maroon', 'red', 'yellow', 'greenyellow', \
                     'cyan', 'blue', 'navy'])
 
-    startlabel0 = int(minv0) # Set the tick parameters
-    startlabel1 = int(minv1)
-    lastlabel0 = int(maxv0)
-    lastlabel1 = int(maxv1)
-    step0 = int((maxv0 - minv0) / 5)
-    step1 = int((maxv1 - minv1) / 5)
-    if step0 == 0: step0 = 1
-    if step1 == 0: step1 = 1
+    step0 = (maxv0 - minv0) / binnum0 # Set the tick parameters
+    step1 = (maxv1 - minv1) / binnum1
     fremax = int(- Kb * temp * np.log(minprob / maxprob))
 
     ax = fig.add_subplot(1,1,1)
@@ -121,12 +115,12 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
     pcbar.set_label('(kJ/mol)', fontsize=16, fontweight='bold')
     if calcfre == False: pcbar.set_label('Probability', fontsize=16,
                                          fontweight='bold')
-    ax.set_xticks(np.arange(0, binnum1 + 1, int(binnum1 / 5)))
-    ax.set_yticks(np.arange(0, binnum0 + 1, int(binnum0 / 5)))
-    ax.set_xticklabels(np.arange(startlabel1, lastlabel1 + 1, step1),
+    ax.set_xticks(np.arange(0, binnum1 + 1, binnum1 / 5))
+    ax.set_yticks(np.arange(0, binnum0 + 1, binnum0 / 5))
+    ax.set_xticklabels(np.arange(0, binnum1 + 1, binnum1 / 5) * step1,
                        fontsize=15)
-    ax.set_yticklabels(np.arange(startlabel0, lastlabel0 + 1, step0),
-                       fontsize=15)
+    ax.set_yticklabels(np.arange(0, binnum0 + 1, binnum0 / 5) * step0,
+                       fontsize=15)    
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
     plt.show()
