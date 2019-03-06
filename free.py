@@ -77,6 +77,11 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
         hist2d_list[hindex0][hindex1] += 1
 
     prob = hist2d_list / len(series0)
+    prob_nonzero = [[j for j in prob[i] if j != 0] for i in range(0, len(prob))]
+    prob_nonzero = [prob_nonzero[i] for i in range(0, len(prob)) if len(prob_nonzero[i]) != 0]
+    
+    maxprob = np.max([np.max(prob[i]) for i in range(0, binnum0)])
+    minprob = np.min([np.min(prob_nonzero[i]) for i in range(0, len(prob_nonzero))])
 
     if rdf == True:
         for i in range(0, len(prob)):
@@ -85,9 +90,9 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
             prob[i] = prob[i] / surfarea
 
     if calcfre == True:
-        logp = - Kb * temp * np.ma.log(prob)
-        minlogp = np.min([np.min(logp[i]) for i in range(0, binnum0)])
-        freene2d = logp - minlogp # Fee energy values
+        freene = - Kb * temp * np.ma.log(prob)
+        minfreene = - Kb * temp * np.log(maxprob)
+        freene2d = freene - minfreene # Fee energy landscape
     else: freene2d = prob
 
     sns.set_style('ticks') # Plot the free energy
@@ -106,7 +111,7 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
     step1 = int((maxv1 - minv1) / 5)
     if step0 == 0: step0 = 1
     if step1 == 0: step1 = 1
-    fremax = int(np.max([np.max(freene2d[i]) for i in range(0, binnum0)]))
+    fremax = int(- Kb * temp * np.log(minprob / maxprob))
 
     ax = fig.add_subplot(1,1,1)
     pccol = plt.pcolor(freene2d, cmap=cm, vmin=0, vmax=fremax)
