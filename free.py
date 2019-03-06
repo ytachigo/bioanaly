@@ -45,14 +45,11 @@ def frehist(series, binnum, temp, calcfre=True, rdf=False):
     mpl.rcParams['axes.linewidth'] = 2.5
     filename = 'frehist.pdf'
 
-    startlabel = int(minv) # Set the tick parameters
-    lastlabel = int(maxv)
-    step = int((maxv - minv) / 5)
-
     ax = fig.add_subplot(1,1,1)
     ax.plot(freene1d, color='Red', linewidth=3)
-    ax.set_xticks(np.arange(0, binnum + 1, int(binnum / 5)))
-    ax.set_xticklabels(np.arange(startlabel, lastlabel + 1, step), fontsize=15)
+    ax.set_xticks(np.arange(0, binnum + 1, binnum / 5))
+    ax.set_xticklabels(minv + np.arange(0, binnum + 1, binnum / 5) * hdelta,
+                       fontsize=15)
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
     plt.show()
@@ -103,8 +100,6 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
     cm = make_cmap(['maroon', 'red', 'yellow', 'greenyellow', \
                     'cyan', 'blue', 'navy'])
 
-    step0 = (maxv0 - minv0) / binnum0 # Set the tick parameters
-    step1 = (maxv1 - minv1) / binnum1
     fremax = int(- Kb * temp * np.log(minprob / maxprob))
 
     ax = fig.add_subplot(1,1,1)
@@ -117,9 +112,9 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
                                          fontweight='bold')
     ax.set_xticks(np.arange(0, binnum1 + 1, binnum1 / 5))
     ax.set_yticks(np.arange(0, binnum0 + 1, binnum0 / 5))
-    ax.set_xticklabels(np.arange(0, binnum1 + 1, binnum1 / 5) * step1,
+    ax.set_xticklabels(minv1 + np.arange(0, binnum1 + 1, binnum1 / 5) * hdelta1,
                        fontsize=15)
-    ax.set_yticklabels(np.arange(0, binnum0 + 1, binnum0 / 5) * step0,
+    ax.set_yticklabels(minv0, np.arange(0, binnum0 + 1, binnum0 / 5) * hdelta0,
                        fontsize=15)    
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
