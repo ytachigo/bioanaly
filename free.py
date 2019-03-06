@@ -34,10 +34,10 @@ def frehist(series, binnum, temp, calcfre=True, rdf=False):
             prob[i] = prob[i] / surfarea
 
     if calcfre == True:
-        logp = - Kb * temp * np.log(prob)
-        minlogp = np.min(logp)
-        freene = logp - minlogp # Fee energy values
-    else: freene = prob
+        freene = - Kb * temp * np.log(prob)
+        minfreene = np.min(freene)
+        freene1d = freene - minfreene # Fee energy landscape
+    else: freene1d = prob
 
     sns.set_style('ticks') # Plot the free energy
     fig = plt.figure(figsize=(5, 5))
@@ -50,7 +50,7 @@ def frehist(series, binnum, temp, calcfre=True, rdf=False):
     step = int((maxv - minv) / 5)
 
     ax = fig.add_subplot(1,1,1)
-    ax.plot(freene, color='Red', linewidth=3)
+    ax.plot(freene1d, color='Red', linewidth=3)
     ax.set_xticks(np.arange(0, binnum + 1, int(binnum / 5)))
     ax.set_xticklabels(np.arange(startlabel, lastlabel + 1, step), fontsize=15)
     ax.tick_params(labelsize=15)
