@@ -74,17 +74,18 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
         hist2d_list[hindex0][hindex1] += 1
 
     prob = hist2d_list / len(series0)
-    prob_nonzero = [[j for j in prob[i] if j != 0] for i in range(0, len(prob))]
-    prob_nonzero = [prob_nonzero[i] for i in range(0, len(prob)) if len(prob_nonzero[i]) != 0]
-    
-    maxprob = np.max([np.max(prob[i]) for i in range(0, binnum0)])
-    minprob = np.min([np.min(prob_nonzero[i]) for i in range(0, len(prob_nonzero))])
 
     if rdf == True:
         for i in range(0, len(prob)):
             radius = (minv0 + (i * hdelta0))
             surfarea = 4 * np.pi * radius * radius
             prob[i] = prob[i] / surfarea
+
+    prob_nonzero = [[j for j in prob[i] if j != 0] for i in range(0, len(prob))]
+    prob_nonzero = [prob_nonzero[i] for i in range(0, len(prob)) if len(prob_nonzero[i]) != 0]
+    
+    maxprob = np.max([np.max(prob[i]) for i in range(0, binnum0)])
+    minprob = np.min([np.min(prob_nonzero[i]) for i in range(0, len(prob_nonzero))])
 
     if calcfre == True:
         freene = - Kb * temp * np.ma.log(prob)
@@ -100,22 +101,22 @@ def frehist2d(series0, series1, binnum0, binnum1, temp,
     cm = make_cmap(['maroon', 'red', 'yellow', 'greenyellow', \
                     'cyan', 'blue', 'navy'])
 
-    fremax = int(- Kb * temp * np.log(minprob / maxprob))
+    fremax = - Kb * temp * np.log(minprob / maxprob)
 
     ax = fig.add_subplot(1,1,1)
     pccol = plt.pcolor(freene2d, cmap=cm, vmin=0, vmax=fremax)
     pcbar = plt.colorbar() # Colorbar
-    pcbar.set_ticks(range(0, fremax))
+    pcbar.set_ticks(np.arange(0, fremax, fremax / 5))
     pcbar.ax.tick_params(labelsize=17, width=4)
     pcbar.set_label('(kJ/mol)', fontsize=16, fontweight='bold')
-    if calcfre == False: pcbar.set_label('Probability', fontsize=16,
-                                         fontweight='bold')
+    if calcfre == False: pcbar.set_label('Probability', \
+                                         fontsize=16, fontweight='bold')
     ax.set_xticks(np.arange(0, binnum1 + 1, binnum1 / 5))
     ax.set_yticks(np.arange(0, binnum0 + 1, binnum0 / 5))
-    ax.set_xticklabels(minv1 + np.arange(0, binnum1 + 1, binnum1 / 5) * hdelta1,
+    ax.set_xticklabels(minv1 + np.arange(0, binnum1 + 1, binnum1 / 5) * hdelta1, 
                        fontsize=15)
-    ax.set_yticklabels(minv0, np.arange(0, binnum0 + 1, binnum0 / 5) * hdelta0,
-                       fontsize=15)    
+    ax.set_yticklabels(minv0 + np.arange(0, binnum0 + 1, binnum0 / 5) * hdelta0, \
+                       fontsize=15)
     ax.tick_params(labelsize=15)
     plt.savefig(filename, dpi=350)
     plt.show()
