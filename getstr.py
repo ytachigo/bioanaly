@@ -18,7 +18,8 @@ def get_pdbtraj(): # Get a PDB trajectory data set
     open_file = open(filename, 'r')
 
     for kline in open_file.readlines():
-        if kline[0:4] != 'ATOM' and kline[0:6] != 'HETATOM' and kline[0:6] != 'ENDMDL':
+        if kline[0:4] != 'ATOM' and kline[0:6] != 'HETATOM' and \
+        kline[0:6] != 'ENDMDL':
             pass
         elif kline[0:4] == 'ATOM' or kline[0:6] == 'HETATOM':
                 atomnum.append(int(kline[7:11]))
