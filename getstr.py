@@ -1,13 +1,13 @@
 def get_pdbtraj(): # Get a PDB trajectory data set
     atomnum_list = []
     atomname_list = []
-    molnum_list = []
+    resnum_list = []
     xcoord_list = []
     ycoord_list = []
     xcoord_list = []
     atomnum = []
     atomname = []
-    molnum = []
+    resnum = []
     xcoord = []
     ycoord = []
     zcoord = []
@@ -21,25 +21,25 @@ def get_pdbtraj(): # Get a PDB trajectory data set
         elif kline[0:4] == 'ATOM' or kline[0:6] == 'HETATOM':
                 atomnum.append(int(kline[7:11]))
                 atomname.append(str(kline[13:16].strip()))
-                molnum.append(int(kline[23:26]))
+                resnum.append(int(kline[23:26]))
                 xcoord.append(float(kline[31:38]))
                 ycoord.append(float(kline[39:46]))
                 zcoord.append(float(kline[47:54]))
         elif kline[0:6] == 'ENDMDL':
             atomnum_list.append(atomnum)
             atomname_list.append(atomname)
-            molnum_list.append(molnum)
+            resnum_list.append(resnum)
             xcoord_list.append(xcoord)
             ycoord_list.append(ycoord)
             zcoord_list.append(zcoord)
             atomnum = []
             atomname = []
-            molnum = []
+            resnum = []
             xcoord = []
             ycoord = []
             zcoord = []
     open_file.close()
-    return atomnum_list, atomname_list, molnum_list,
+    return atomnum_list, atomname_list, resnum_list,
            xcoord_list, ycoord_list, zcoord_list
 
 def get_inpcrd(): # Get coordinates from a AMBER input file.
