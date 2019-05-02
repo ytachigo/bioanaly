@@ -2,12 +2,14 @@ def get_pdbtraj(): # Get a PDB trajectory data set
     atomnum_list = []
     atomname_list = []
     resnum_list = []
+    resname_list = []
     xcoord_list = []
     ycoord_list = []
     xcoord_list = []
     atomnum = []
     atomname = []
     resnum = []
+    resname = []
     xcoord = []
     ycoord = []
     zcoord = []
@@ -22,6 +24,7 @@ def get_pdbtraj(): # Get a PDB trajectory data set
                 atomnum.append(int(kline[7:11]))
                 atomname.append(str(kline[13:16].strip()))
                 resnum.append(int(kline[23:26]))
+                resname.append(str(kline[16:20].strip()))
                 xcoord.append(float(kline[31:38]))
                 ycoord.append(float(kline[39:46]))
                 zcoord.append(float(kline[47:54]))
@@ -29,18 +32,20 @@ def get_pdbtraj(): # Get a PDB trajectory data set
             atomnum_list.append(atomnum)
             atomname_list.append(atomname)
             resnum_list.append(resnum)
+            resname_list.append(resname)
             xcoord_list.append(xcoord)
             ycoord_list.append(ycoord)
             zcoord_list.append(zcoord)
             atomnum = []
             atomname = []
             resnum = []
+            resname = []
             xcoord = []
             ycoord = []
             zcoord = []
     open_file.close()
     return atomnum_list, atomname_list, resnum_list,
-           xcoord_list, ycoord_list, zcoord_list
+           resname_list, xcoord_list, ycoord_list, zcoord_list
 
 def get_inpcrd(): # Get coordinates from a AMBER input file.
     xcoord_list = []
