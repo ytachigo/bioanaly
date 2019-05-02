@@ -13,9 +13,9 @@ def get_pdbtraj(): # Get a PDB trajectory data set
     zcoord = []
 
     filename = input('Filename(pdb): ')
-    f = open(filename, 'r')
+    open_file = open(filename, 'r')
 
-    for kline in f.readlines():
+    for kline in open_file.readlines():
         if kline[0:4] != 'ATOM' and kline[0:6] != 'HETATOM' and kline[0:6] != 'ENDMDL':
             pass
         elif kline[0:4] == 'ATOM' or kline[0:6] == 'HETATOM':
@@ -38,8 +38,8 @@ def get_pdbtraj(): # Get a PDB trajectory data set
             xcoord = []
             ycoord = []
             zcoord = []
-    f.close()
-    return atomnum_list, atomname_list, molnum_list, 
+    open_file.close()
+    return atomnum_list, atomname_list, molnum_list,
            xcoord_list, ycoord_list, zcoord_list
 
 def get_inpcrd(): # Get coordinates from a AMBER input file.
@@ -48,9 +48,9 @@ def get_inpcrd(): # Get coordinates from a AMBER input file.
     zcoord_list = []
 
     filename = input('Filename(inpcrd): ')
-    f = open(filename, 'r')
+    open_file = open(filename, 'r')
 
-    for kline in f.readlines()[2:]:
+    for kline in open_file.readlines()[2:]:
         xcoord_list.append(str(kline[0:12].strip()))
         ycoord_list.append(str(kline[12:24].strip()))
         zcoord_list.append(str(kline[24:36].strip()))
