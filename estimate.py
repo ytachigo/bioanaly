@@ -5,18 +5,20 @@ import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 
-def jackknife(series, n):
-    cutsample = [samples for samples in zip(*[iter(series.tolist())] * n)]
-    nsp = len(cutsample)
-    av_list = []
+def jackknife(series, nsp):
+    cutsample = [samples for samples in zip(*[iter(series.tolist())] * nsp)]
+    nb = len(cutsample)
+    av_sample = np.mean(series)
+    psdv_list = []
 
-    for i in range(0, nsp): 
+    for i in range(0, nb):
         resample = []
-        for j in range(0, nsp):
+        for j in range(0, nb):
             if j != i: resample += cutsample[i]
-        av_list.append(np.mean(resample))
+        psdv = (nb * av_sample) - ((nb - 1) * np.mean(resample))
+        psdv_list.append(psdv)
 
-    jav = np.mean(av_list)
-    delta = [(jav - av) * (jav - av) for av in av_list]
-    jerr = np.sqrt(np.sum(delta) / (nsp - 1)) / np.sqrt(nsp)
+    jav = np.mean(psdv_list)
+    jvar = np.var(psdv_list, ddof=1)
+    jerr = np.sqrt(jvar / nb)
     return jav, jerr
