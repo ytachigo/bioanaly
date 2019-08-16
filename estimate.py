@@ -21,4 +21,4 @@ def jackknife(series, nsp):
     jav = np.mean(psdv_list)
     jvar = np.var(psdv_list, ddof=1)
     jerr = np.sqrt(jvar / nb)
-    return jav, jerr
+    return jav, jerr, psdv_list
